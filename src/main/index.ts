@@ -1226,10 +1226,21 @@ app.whenReady().then(() => {
 
   autoUpdater.on('update-downloaded', (info) => {
     console.log(`[AutoUpdate] Update downloaded: ${info.version}`)
+    
+    // Extract release notes if available
+    let releaseNotes = ''
+    if (info.releaseNotes) {
+      if (typeof info.releaseNotes === 'string') {
+        releaseNotes = `\n\nNovedades:\n${info.releaseNotes}`
+      } else if (Array.isArray(info.releaseNotes)) {
+        releaseNotes = `\n\nNovedades:\n${info.releaseNotes.map(n => n.note).join('\n')}`
+      }
+    }
+
     dialog.showMessageBox({
       type: 'info',
       title: 'Actualización lista',
-      message: `La versión ${info.version} de Snow Hub ha sido descargada satisfactoriamente. Se instalará automáticamente al cerrar la aplicación.`,
+      message: `La versión ${info.version} de Snow Hub ha sido descargada satisfactoriamente.${releaseNotes}\n\nSe instalará automáticamente al cerrar la aplicación.`,
       buttons: ['Aceptar', 'Reiniciar ahora']
     }).then((result) => {
       if (result.response === 1) {
