@@ -44,6 +44,10 @@ export interface IApi {
   pickIcon: () => Promise<string | null>
   createDesktopShortcut: (instanceId: string) => Promise<boolean>
   executeJavaScript: (instanceId: string, tabId: number, script: string) => Promise<any>
+  getLanguage: () => Promise<string>
+  setLanguage: (lang: string) => Promise<void>
+  getAppVersion: () => Promise<string>
+  onLanguageChanged: (callback: (lang: string) => void) => () => void
 }
 
 declare global {
