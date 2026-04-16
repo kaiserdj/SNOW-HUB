@@ -1230,10 +1230,29 @@ app.whenReady().then(() => {
     // Extract release notes if available
     let releaseNotes = ''
     if (info.releaseNotes) {
+      let rawNotes = ''
       if (typeof info.releaseNotes === 'string') {
-        releaseNotes = `\n\nNovedades:\n${info.releaseNotes}`
+        rawNotes = info.releaseNotes
       } else if (Array.isArray(info.releaseNotes)) {
-        releaseNotes = `\n\nNovedades:\n${info.releaseNotes.map(n => n.note).join('\n')}`
+        rawNotes = info.releaseNotes.map((n) => (typeof n === 'string' ? n : n.note)).join('\n')
+      }
+
+      // Basic HTML stripping and formatting
+      const cleanNotes = rawNotes
+        .replace(/<br\s*\/?>/gi, '\n') // <br> -> newline
+        .replace(/<\/p>/gi, '\n') // </p> -> newline
+        .replace(/<li>/gi, '• ') // <li> -> bullet
+        .replace(/<\/li>/gi, '\n') // </li> -> newline
+        .replace(/<[^>]*>?/gm, '') // Strip remaining tags
+        .replace(/&nbsp;/g, ' ')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&amp;/g, '&')
+        .replace(/\n\s*\n/g, '\n\n') // Normalize newlines
+        .trim()
+
+      if (cleanNotes) {
+        releaseNotes = `\n\nNovedades:\n${cleanNotes}`
       }
     }
 
