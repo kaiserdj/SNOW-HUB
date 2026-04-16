@@ -17,7 +17,7 @@ interface GeneralSettingsProps {
 }
 
 export function GeneralSettings({ open, onOpenChange }: GeneralSettingsProps): React.JSX.Element {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const [currentLng, setCurrentLng] = useState<string>('auto')
   const [version, setVersion] = useState<string>('...')
 
