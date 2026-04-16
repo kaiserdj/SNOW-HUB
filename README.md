@@ -1,4 +1,4 @@
-# ❄️ Snow Hub
+# <img src="build/icon.png" width="32" height="32" valign="middle"> Snow Hub
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Electron](https://img.shields.io/badge/Electron-v39.x-blue.svg)](https://www.electronjs.org/)
