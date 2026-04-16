@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { useTranslation, Trans } from 'react-i18next'
+import { GeneralSettings } from './GeneralSettings'
 import { Button } from './ui/button'
 import {
   Card,
@@ -29,8 +31,10 @@ interface Instance {
 }
 
 export function Dashboard(): React.JSX.Element {
+  const { t } = useTranslation()
   const [instances, setInstances] = useState<Instance[]>([])
   const [isAddOpen, setIsAddOpen] = useState(false)
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
 
   // Form state
@@ -91,7 +95,7 @@ export function Dashboard(): React.JSX.Element {
   }
 
   async function handleDelete(id: string): Promise<void> {
-    if (confirm('Are you sure you want to delete this instance?')) {
+    if (confirm(t('dashboard.delete_confirm'))) {
       await window.api.deleteInstance(id)
       loadInstances()
     }
@@ -109,9 +113,9 @@ export function Dashboard(): React.JSX.Element {
   async function handleCreateShortcut(id: string): Promise<void> {
     const success = await window.api.createDesktopShortcut(id)
     if (success) {
-      alert('Acceso directo creado en el escritorio.')
+      alert(t('dashboard.shortcut_created'))
     } else {
-      alert('Error al crear el acceso directo.')
+      alert(t('dashboard.shortcut_error'))
     }
   }
 
@@ -152,29 +156,44 @@ export function Dashboard(): React.JSX.Element {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
               </span>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-primary">System Online</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{t('dashboard.system_online')}</span>
             </div>
             <h1 className="text-6xl font-black tracking-tighter bg-gradient-to-br from-foreground via-foreground/80 to-muted-foreground bg-clip-text text-transparent">
-              SNOW Hub
+              {t('dashboard.title')}
             </h1>
             <p className="text-muted-foreground text-xl max-w-2xl font-medium leading-relaxed">
-              Professional instance management with <span className="text-foreground border-b-2 border-primary/20">hardened isolation</span> and developer utilities.
+              {t('dashboard.subtitle_part1')}
+              <span className="text-foreground border-b-2 border-primary/20">
+                {t('dashboard.subtitle_highlight')}
+              </span>
+              {t('dashboard.subtitle_end') || t('dashboard.subtitle_part2')}
             </p>
           </div>
 
-          <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
+          <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setIsSettingsOpen(true)}
+              className="w-14 h-14 rounded-2xl border-primary/10 hover:bg-primary/5 hover:border-primary/20 transition-all active:scale-95"
+              title={t('settings.header')}
+            >
+              <Settings className="w-6 h-6 text-muted-foreground" />
+            </Button>
+
+            <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
             <DialogTrigger asChild>
               <Button onClick={handleOpenAdd} className="group relative gap-3 px-8 h-14 text-lg font-bold shadow-2xl shadow-primary/30 hover:shadow-primary/50 transition-all rounded-2xl overflow-hidden active:scale-95">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-primary group-hover:opacity-90 transition-opacity" />
                 <Plus className="relative w-6 h-6" />
-                <span className="relative">Add Instance</span>
+                <span className="relative">{t('dashboard.add_instance')}</span>
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[550px] rounded-[2rem] border-primary/10 shadow-3xl">
               <DialogHeader>
-                <DialogTitle className="text-3xl font-black tracking-tight">{editingId ? 'Edit Instance' : 'New Workspace'}</DialogTitle>
+                <DialogTitle className="text-3xl font-black tracking-tight">{editingId ? t('dashboard.edit_instance') : t('dashboard.new_workspace')}</DialogTitle>
                 <DialogDescription className="text-base">
-                  Define the parameters for your isolated ServiceNow environment.
+                  {t('dashboard.instance_desc')}
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-8 py-6">
@@ -191,12 +210,12 @@ export function Dashboard(): React.JSX.Element {
                       <Search className="w-5 h-5" />
                     </div>
                   </div>
-                  <Label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Workspace Branding</Label>
+                  <Label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{t('dashboard.branding')}</Label>
                 </div>
 
                 <div className="space-y-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="name" className="text-sm font-bold pl-1">Instance Label</Label>
+                    <Label htmlFor="name" className="text-sm font-bold pl-1">{t('dashboard.label')}</Label>
                     <Input
                       id="name"
                       placeholder="e.g. Production SP"
@@ -206,7 +225,7 @@ export function Dashboard(): React.JSX.Element {
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="url" className="text-sm font-bold pl-1">Connection URL</Label>
+                    <Label htmlFor="url" className="text-sm font-bold pl-1">{t('dashboard.url')}</Label>
                     <Input
                       id="url"
                       placeholder="https://dev12345.service-now.com"
@@ -222,11 +241,11 @@ export function Dashboard(): React.JSX.Element {
                     <div className="p-2 bg-primary/10 rounded-lg">
                       <Key className="w-5 h-5 text-primary" />
                     </div>
-                    <span className="text-md font-black italic uppercase tracking-tighter text-primary">Secure Vault Injection</span>
+                    <span className="text-md font-black italic uppercase tracking-tighter text-primary">{t('dashboard.secure_vault')}</span>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="grid gap-2">
-                      <Label htmlFor="user" className="text-[10px] font-black text-primary/60 uppercase tracking-widest pl-1">Username</Label>
+                      <Label htmlFor="user" className="text-[10px] font-black text-primary/60 uppercase tracking-widest pl-1">{t('dashboard.username')}</Label>
                       <Input
                         id="user"
                         placeholder="admin"
@@ -236,7 +255,7 @@ export function Dashboard(): React.JSX.Element {
                       />
                     </div>
                     <div className="grid gap-2">
-                      <Label htmlFor="pass" className="text-[10px] font-black text-primary/60 uppercase tracking-widest pl-1">Password</Label>
+                      <Label htmlFor="pass" className="text-[10px] font-black text-primary/60 uppercase tracking-widest pl-1">{t('dashboard.password')}</Label>
                       <Input
                         id="pass"
                         type="password"
@@ -251,14 +270,15 @@ export function Dashboard(): React.JSX.Element {
               </div>
               <DialogFooter className="border-t pt-6 gap-3">
                 <Button variant="ghost" onClick={() => setIsAddOpen(false)} className="px-6 rounded-xl font-bold">
-                  Cancel
+                  {t('common.cancel')}
                 </Button>
                 <Button onClick={handleSave} className="px-10 rounded-xl h-12 font-black shadow-lg shadow-primary/20">
-                  Deploy Configuration
+                  {t('dashboard.deploy')}
                 </Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
+          </div>
         </header>
 
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -281,7 +301,7 @@ export function Dashboard(): React.JSX.Element {
                 </div>
                 <div className="space-y-1.5 min-w-0 flex-1">
                   <div className="inline-block px-2 py-0.5 rounded-md bg-primary/10 text-[9px] font-black tracking-widest text-primary uppercase mb-1">
-                    Verified
+                    {t('dashboard.verified')}
                   </div>
                   <CardTitle className="text-2xl font-black truncate leading-tight tracking-tight">
                     {instance.name}
@@ -297,7 +317,7 @@ export function Dashboard(): React.JSX.Element {
                 <div className="flex flex-wrap gap-2">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/5 border border-primary/10 text-[10px] font-bold text-primary">
                     <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                    Isolated Cookie Store
+                    {t('dashboard.isolated')}
                   </div>
                   <div className="inline-flex items-center px-3 py-1 rounded-full bg-muted/40 text-[10px] font-bold text-muted-foreground">
                     #{instance.id.substring(0, 4)}
@@ -312,7 +332,7 @@ export function Dashboard(): React.JSX.Element {
                     size="icon" 
                     className="w-11 h-11 rounded-2xl hover:bg-background hover:text-primary shadow-sm active:scale-95 transition-all" 
                     onClick={() => handleOpenEdit(instance)}
-                    title="Settings"
+                    title={t('main.context.edit_settings')}
                   >
                     <Settings className="w-5 h-5" />
                   </Button>
@@ -321,7 +341,7 @@ export function Dashboard(): React.JSX.Element {
                     size="icon"
                     className="w-11 h-11 rounded-2xl text-muted-foreground hover:bg-background hover:text-primary shadow-sm active:scale-95 transition-all"
                     onClick={() => handleCreateShortcut(instance.id)}
-                    title="Desktop Shortcut"
+                    title={t('main.context.create_shortcut')}
                   >
                     <MonitorSmartphone className="w-5 h-5" />
                   </Button>
@@ -330,7 +350,7 @@ export function Dashboard(): React.JSX.Element {
                     size="icon"
                     className="w-11 h-11 rounded-2xl text-muted-foreground hover:bg-destructive/10 hover:text-destructive shadow-sm active:scale-95 transition-all"
                     onClick={() => handleDelete(instance.id)}
-                    title="Purge Instance"
+                    title={t('main.context.delete_instance')}
                   >
                     <Trash2 className="w-5 h-5" />
                   </Button>
@@ -340,7 +360,7 @@ export function Dashboard(): React.JSX.Element {
                   onClick={() => handleOpenInstance(instance.id, instance.name)}
                 >
                   <Play className="w-5 h-5 fill-current" />
-                  <span className="hidden sm:inline">Launch</span>
+                  <span className="hidden sm:inline">{t('dashboard.launch')}</span>
                   <ArrowRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                 </Button>
               </CardFooter>
@@ -355,17 +375,19 @@ export function Dashboard(): React.JSX.Element {
                   <Plus className="w-14 h-14 text-primary" />
                 </div>
               </div>
-              <h3 className="text-4xl font-black tracking-tight mb-4">Empty Fleet</h3>
+              <h3 className="text-4xl font-black tracking-tight mb-4">{t('dashboard.empty_title')}</h3>
               <p className="text-muted-foreground max-w-lg mx-auto text-xl font-medium leading-relaxed mb-10">
-                Your isolated browser fleet is currently inactive. Deploy your first ServiceNow instance to begin.
+                {t('dashboard.empty_desc')}
               </p>
               <Button variant="default" className="px-12 h-16 text-xl font-black rounded-3xl shadow-2xl shadow-primary/40 active:scale-95 transition-all" onClick={handleOpenAdd}>
-                Start Deployment
+                {t('dashboard.start_deployment')}
               </Button>
             </div>
           )}
         </section>
       </div>
+
+      <GeneralSettings open={isSettingsOpen} onOpenChange={setIsSettingsOpen} />
     </div>
   )
 }

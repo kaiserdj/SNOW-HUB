@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Plus, X, Globe, Lock, Zap, Settings, ArrowLeft, ArrowRight, RotateCw, Copy, Check } from 'lucide-react'
 
 export interface Tab {
@@ -11,9 +12,10 @@ export interface Tab {
 }
 
 export function InstanceView({ instanceId }: { instanceId: string }): React.JSX.Element {
+  const { t } = useTranslation()
   const [tabs, setTabs] = useState<Tab[]>([])
   const [activeTabId, setActiveTabId] = useState<number | null>(null)
-  const [instanceName, setInstanceName] = useState('Loading...')
+  const [instanceName, setInstanceName] = useState(t('common.loading'))
   const [credentials, setCredentials] = useState<{ username?: string; password?: string }>({})
   const [urlInput, setUrlInput] = useState('')
   const initialTabCreated = useRef(false)
@@ -350,7 +352,7 @@ export function InstanceView({ instanceId }: { instanceId: string }): React.JSX.
           onClick={handleCreate}
           className="h-8 w-8 min-w-[32px] shrink-0 flex items-center justify-center rounded-md hover:bg-muted/80 text-muted-foreground transition-colors self-end mb-[1px]"
           style={{ WebkitAppRegion: 'no-drag' } as React.CSSProperties}
-          title="New Tab"
+          title={t('instance.new_tab')}
         >
           <Plus className="w-4 h-4" />
         </button>
@@ -364,14 +366,14 @@ export function InstanceView({ instanceId }: { instanceId: string }): React.JSX.
           <button
             onClick={() => window.api.openSNUtilsPopup()}
             className="h-8 w-8 flex items-center justify-center rounded-md hover:bg-muted/80 text-amber-500 transition-colors"
-            title="SN Utils Popup"
+            title={t('instance.sn_utils_popup')}
           >
             <Zap className="w-4 h-4" />
           </button>
           <button
             onClick={() => window.api.openSNUtilsSettings()}
             className="h-8 w-8 flex items-center justify-center rounded-md hover:bg-muted/80 text-muted-foreground transition-colors"
-            title="SN Utils Settings"
+            title={t('instance.sn_utils_settings')}
           >
             <Settings className="w-4 h-4" />
           </button>
@@ -384,21 +386,21 @@ export function InstanceView({ instanceId }: { instanceId: string }): React.JSX.
           <button
             onClick={() => activeTabId && window.api.goBack(instanceId, activeTabId)}
             className="p-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors disabled:opacity-30"
-            title="Back"
+            title={t('instance.back')}
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
           <button
             onClick={() => activeTabId && window.api.goForward(instanceId, activeTabId)}
             className="p-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors disabled:opacity-30"
-            title="Forward"
+            title={t('instance.forward')}
           >
             <ArrowRight className="w-4 h-4" />
           </button>
           <button
             onClick={() => activeTabId && window.api.reload(instanceId, activeTabId)}
             className="p-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-all active:rotate-180"
-            title="Refresh"
+            title={t('instance.refresh')}
           >
             <RotateCw className="w-4 h-4" />
           </button>
@@ -422,7 +424,7 @@ export function InstanceView({ instanceId }: { instanceId: string }): React.JSX.
               }
             }}
             className="flex-1 bg-transparent border-none outline-none text-[13px] text-foreground placeholder:text-muted-foreground/50"
-            placeholder="Search or enter address"
+            placeholder={t('instance.address_placeholder')}
           />
           
           {/* Mini Bar for Table and SysID */}
@@ -437,7 +439,7 @@ export function InstanceView({ instanceId }: { instanceId: string }): React.JSX.
                   onSave={(newTable) => navigateToRecord(newTable, 'List')}
                   onCopy={() => copyToClipboard(tabs.find(t => t.id === activeTabId)!.tableName!)}
                   className="bg-primary/10 hover:bg-primary/20 border-primary/20 text-primary"
-                  title="Table Name"
+                  title={t('instance.table_name')}
                 />
               )}
               
@@ -451,7 +453,7 @@ export function InstanceView({ instanceId }: { instanceId: string }): React.JSX.
                     ? 'bg-amber-500/10 hover:bg-amber-500/20 border-amber-500/20 text-amber-600 dark:text-amber-400'
                     : 'bg-emerald-500/10 hover:bg-emerald-500/20 border-emerald-500/20 text-emerald-600 dark:text-emerald-400'
                   }
-                  title={tabs.find(t => t.id === activeTabId)?.sysId === 'List' ? 'List View' : 'SysID'}
+                  title={tabs.find(t => t.id === activeTabId)?.sysId === 'List' ? 'List View' : t('instance.sys_id')}
                   disableTruncate={tabs.find(t => t.id === activeTabId)?.sysId !== 'List'}
                 />
               )}
@@ -461,7 +463,7 @@ export function InstanceView({ instanceId }: { instanceId: string }): React.JSX.
           <button
             onClick={handleCopy}
             className="p-1.5 rounded-md hover:bg-background/80 text-muted-foreground hover:text-foreground transition-all"
-            title="Copy URL"
+            title={t('instance.copy_url')}
           >
             {copied ? (
               <Check className="w-3.5 h-3.5 text-emerald-500" />

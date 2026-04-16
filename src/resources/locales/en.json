@@ -1,0 +1,108 @@
+{
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "error": "Error",
+    "success": "Success",
+    "loading": "Loading..."
+  },
+  "dashboard": {
+    "system_online": "System Online",
+    "title": "SNOW Hub",
+    "subtitle_part1": "Professional instance management with ",
+    "subtitle_highlight": "hardened isolation",
+    "subtitle_part2": " and developer utilities.",
+    "add_instance": "Add Instance",
+    "edit_instance": "Edit Instance",
+    "new_workspace": "New Workspace",
+    "instance_desc": "Define the parameters for your isolated ServiceNow environment.",
+    "branding": "Workspace Branding",
+    "label": "Instance Label",
+    "url": "Connection URL",
+    "secure_vault": "Secure Vault Injection",
+    "username": "Username",
+    "password": "Password",
+    "deploy": "Deploy Configuration",
+    "verified": "Verified",
+    "isolated": "Isolated Cookie Store",
+    "launch": "Launch",
+    "empty_title": "Empty Fleet",
+    "empty_desc": "Your isolated browser fleet is currently inactive. Deploy your first ServiceNow instance to begin.",
+    "start_deployment": "Start Deployment",
+    "delete_confirm": "Are you sure you want to delete this instance?",
+    "shortcut_created": "Desktop shortcut created.",
+    "shortcut_error": "Error creating desktop shortcut."
+  },
+  "instance": {
+    "new_tab": "New Tab",
+    "sn_utils_popup": "SN Utils Popup",
+    "sn_utils_settings": "SN Utils Settings",
+    "back": "Back",
+    "forward": "Forward",
+    "refresh": "Refresh",
+    "address_placeholder": "Search or enter address",
+    "table_name": "Table Name",
+    "sys_id": "SysID",
+    "copy_url": "Copy URL"
+  },
+  "settings": {
+    "header": "General Settings",
+    "language": "Language",
+    "version": "Version",
+    "credits": "Credits",
+    "creator": "Created by kaiserdj",
+    "close": "Close"
+  },
+  "main": {
+    "tray": {
+      "show_dashboard": "Show Dashboard",
+      "open_instance": "Open {{name}}",
+      "run_background": "Run in Background",
+      "exit": "Exit"
+    },
+    "context": {
+      "launch": "Launch Instance",
+      "create_shortcut": "Create Desktop Shortcut",
+      "edit_settings": "Edit Settings",
+      "delete_instance": "Delete Instance"
+    },
+    "update": {
+      "ready_title": "Update Ready",
+      "ready_message": "Snow Hub version {{version}} has been successfully downloaded.{{releaseNotes}}\n\nIt will be installed automatically when the application is closed.",
+      "release_notes": "\n\nWhat's new:\n{{notes}}",
+      "accept": "Accept",
+      "restart": "Restart Now"
+    },
+    "webview_context": {
+      "open_new_tab": "Open link in new tab",
+      "copy_link": "Copy link address",
+      "copy_image": "Copy image",
+      "save_image": "Save image as...",
+      "search_selection": "Search \"{{selection}}\"",
+      "instance_search": "Instance Search",
+      "codesearch": "SN Utils Code Search",
+      "open_script_include": "Open Script Include",
+      "table_list": "Table List",
+      "property": "Property",
+      "back": "Back",
+      "forward": "Forward",
+      "refresh": "Reload",
+      "sn_utils": {
+        "technical_names": "Technical Names (/tn)",
+        "pop_out": "PopIn / PopOut (/pop)",
+        "unhide_fields": "Unhide fields (/uh)",
+        "cancel_transactions": "Cancel Transactions",
+        "updates_today": "Today's Updates",
+        "update_versions": "Update Versions",
+        "stats": "stats.do",
+        "clear_cache": "Clear Cache & Instance",
+        "clear_cookies": "Clear Cookies (Logout)",
+        "goto_list_sysid": "Go to list (sys_id)",
+        "open_popup": "Open SN Utils Popup",
+        "open_scriptsync": "Open sn-scriptsync Helper"
+      },
+      "inspect": "Inspect Element"
+    }
+  }
+}

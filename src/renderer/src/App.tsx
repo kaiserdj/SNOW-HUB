@@ -22,7 +22,7 @@ function App(): React.JSX.Element {
     }
   }, [])
 
-  if (!view) return <div className="min-h-screen bg-background text-foreground flex items-center justify-center">Loading...</div>
+  if (!view) return <div className="min-h-screen bg-background text-foreground flex items-center justify-center">{window.api ? '' : 'Loading...'}</div>
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans antialiased">

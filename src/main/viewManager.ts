@@ -3,6 +3,7 @@ import { join } from 'path'
 import * as fs from 'fs'
 import { openSNUtilsPopup } from './snUtilsWindows'
 import { getInstances, getSnUtilsStorage, getCredentials } from './store'
+import { t } from './i18n'
 
 export interface Tab {
   id: number
@@ -449,11 +450,11 @@ export class ViewManager {
       // Link Actions
       if (props.linkURL) {
         template.push({
-          label: 'Abrir enlace en nueva pestaña',
+          label: t('main.webview_context.open_new_tab'),
           click: () => this.createTab(targetId, props.linkURL)
         })
         template.push({
-          label: 'Copiar dirección del enlace',
+          label: t('main.webview_context.copy_link'),
           click: () => clipboard.writeText(props.linkURL)
         })
         template.push({ type: 'separator' })
@@ -462,13 +463,13 @@ export class ViewManager {
       // Image Actions
       if (props.mediaType === 'image') {
         template.push({
-          label: 'Copiar imagen',
+          label: t('main.webview_context.copy_image'),
           click: () => {
             view.webContents.copyImageAt(props.x, props.y)
           }
         })
         template.push({
-          label: 'Guardar imagen como...',
+          label: t('main.webview_context.save_image'),
           click: () => view.webContents.downloadURL(props.srcURL)
         })
         template.push({ type: 'separator' })
@@ -486,17 +487,17 @@ export class ViewManager {
         }
 
         template.push({
-          label: `Buscar "${selection.length > 20 ? selection.substring(0, 20) + '...' : selection}"`,
+          label: t('main.webview_context.search_selection', { selection: selection.length > 20 ? selection.substring(0, 20) + '...' : selection }),
           submenu: [
             {
-              label: 'Búsqueda en la instancia',
+              label: t('main.webview_context.instance_search'),
               click: () => {
                 const searchUrl = `${origin}/nav_to.do?uri=${encodeURIComponent(`textsearch.do?sysparm_search=${selection}`)}`
                 this.createTab(targetId, searchUrl)
               }
             },
             {
-              label: 'SN Utils Code Search',
+              label: t('main.webview_context.codesearch'),
               click: async () => {
                 const g_ck = await view.webContents.executeJavaScript('window.g_ck').catch(() => null)
                 const instance = new URL(origin).host.replace('.service-now.com', '')
@@ -505,21 +506,21 @@ export class ViewManager {
               }
             },
             {
-              label: 'Abrir Script Include',
+              label: t('main.webview_context.open_script_include'),
               click: () => {
                 const searchUrl = `${origin}/nav_to.do?uri=${encodeURIComponent(`sys_script_include_list.do?sysparm_query=name=${selection}`)}`
                 this.createTab(targetId, searchUrl)
               }
             },
             {
-              label: 'Lista de tabla',
+              label: t('main.webview_context.table_list'),
               click: () => {
                 const searchUrl = `${origin}/nav_to.do?uri=${encodeURIComponent(`${selection}_list.do`)}`
                 this.createTab(targetId, searchUrl)
               }
             },
             {
-              label: 'Propiedad',
+              label: t('main.webview_context.property'),
               click: () => {
                 const searchUrl = `${origin}/nav_to.do?uri=${encodeURIComponent(`sys_properties_list.do?sysparm_query=name=${selection}`)}`
                 this.createTab(targetId, searchUrl)
@@ -546,27 +547,27 @@ export class ViewManager {
 
       // Navigation Actions
       template.push({
-        label: 'Atrás',
+        label: t('main.webview_context.back'),
         enabled: view.webContents.navigationHistory.canGoBack(),
         click: () => view.webContents.navigationHistory.goBack()
       })
       template.push({
-        label: 'Adelante',
+        label: t('main.webview_context.forward'),
         enabled: view.webContents.navigationHistory.canGoForward(),
         click: () => view.webContents.navigationHistory.goForward()
       })
       template.push({
-        label: 'Recargar',
+        label: t('main.webview_context.refresh'),
         click: () => view.webContents.reload()
       })
       template.push({ type: 'separator' })
 
       // SN Utils Tools
       template.push({
-        label: 'SN Utils',
+        label: t('main.webview_context.sn_utils.title', 'SN Utils'),
         submenu: [
           {
-            label: 'Nombres técnicos (/tn)',
+            label: t('main.webview_context.sn_utils.technical_names'),
             click: () => {
               const script = 'if(typeof snuAddTechnicalNames === "function") snuAddTechnicalNames();'
               const exec = (inner: WebFrameMain) => {
@@ -577,11 +578,11 @@ export class ViewManager {
             }
           },
           {
-            label: 'PopIn / PopOut (/pop)',
+            label: t('main.webview_context.sn_utils.pop_out'),
             click: () => this.handlePopOut(targetId, tabId)
           },
           {
-            label: 'Mostrar campos ocultos (/uh)',
+            label: t('main.webview_context.sn_utils.unhide_fields'),
             click: () => {
               const script = 'if(typeof unhideFields === "function") unhideFields();'
               const exec = (inner: WebFrameMain) => {
@@ -592,28 +593,28 @@ export class ViewManager {
             }
           },
           {
-            label: 'Cancelar transacciones',
+            label: t('main.webview_context.sn_utils.cancel_transactions'),
             click: () => {
               const origin = new URL(view.webContents.getURL()).origin
               this.createTab(targetId, `${origin}/cancel_my_transactions.do`)
             }
           },
           {
-            label: 'Actualizaciones de hoy',
+            label: t('main.webview_context.sn_utils.updates_today'),
             click: () => {
               const origin = new URL(view.webContents.getURL()).origin
               this.createTab(targetId, `${origin}/sys_update_xml_list.do?sysparm_query=sys_updated_onONToday@javascript:gs.beginningOfToday()@javascript:gs.endOfToday()^ORDERBYDESCsys_updated_on`)
             }
           },
           {
-            label: 'Versiones de actualización',
+            label: t('main.webview_context.sn_utils.update_versions'),
             click: () => {
               const origin = new URL(view.webContents.getURL()).origin
               this.createTab(targetId, `${origin}/sys_update_version_list.do?sysparm_query=ORDERBYDESCsys_recorded_at`)
             }
           },
           {
-            label: 'stats.do',
+            label: t('main.webview_context.sn_utils.stats'),
             click: () => {
               const origin = new URL(view.webContents.getURL()).origin
               this.createTab(targetId, `${origin}/stats.do`)
@@ -621,7 +622,7 @@ export class ViewManager {
           },
           { type: 'separator' },
           {
-            label: 'Limpiar Caché e Instancia',
+            label: t('main.webview_context.sn_utils.clear_cache'),
             click: () => {
               const script = 'if(typeof snuClearCache === "function") snuClearCache();'
               const exec = (inner: WebFrameMain) => {
@@ -632,7 +633,7 @@ export class ViewManager {
             }
           },
           {
-            label: 'Borrar Cookies (Logout)',
+            label: t('main.webview_context.sn_utils.clear_cookies'),
             click: () => {
                 const origin = new URL(view.webContents.getURL()).origin
                 sess.clearStorageData({ storages: ['cookies'] }).then(() => {
@@ -642,7 +643,7 @@ export class ViewManager {
           },
           { type: 'separator' },
           {
-            label: 'Ir a la lista (sys_id)',
+            label: t('main.webview_context.sn_utils.goto_list_sysid'),
             click: async () => {
               const findGFormData = async (frame: WebFrameMain): Promise<{ tableName: string, sysId: string } | null> => {
                 try {
@@ -681,11 +682,11 @@ export class ViewManager {
             }
           },
           {
-            label: 'Abrir Popup de SN Utils',
+            label: t('main.webview_context.sn_utils.open_popup'),
             click: () => openSNUtilsPopup()
           },
           {
-            label: 'Abrir sn-scriptsync Helper',
+            label: t('main.webview_context.sn_utils.open_scriptsync'),
             click: () => {
               this.createTab(targetId, 'snuhub-extension://electron-snow-hub/scriptsync.html')
             }
@@ -695,7 +696,7 @@ export class ViewManager {
 
       template.push({ type: 'separator' })
       template.push({
-        label: 'Inspeccionar elemento',
+        label: t('main.webview_context.inspect'),
         click: () => {
           view.webContents.inspectElement(props.x, props.y)
         }

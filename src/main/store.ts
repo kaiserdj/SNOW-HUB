@@ -18,6 +18,7 @@ interface StoreSchema {
   credentials: Record<string, InstanceCredentials>
   snUtilsStorage?: Record<string, any>
   runInBackground: boolean
+  language: 'en' | 'es' | 'auto'
 }
 
 export const store = new Store<StoreSchema>({
@@ -25,7 +26,8 @@ export const store = new Store<StoreSchema>({
     instances: [],
     credentials: {},
     snUtilsStorage: { local: {}, sync: {} },
-    runInBackground: true
+    runInBackground: true,
+    language: 'auto'
   }
 })
 

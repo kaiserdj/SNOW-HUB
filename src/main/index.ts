@@ -39,6 +39,7 @@ import {
   setSnUtilsStorage
 } from './store'
 import { viewManager } from './viewManager'
+import { initI18n, t, changeLanguage } from './i18n'
 
 const gotTheLock = app.requestSingleInstanceLock()
 
@@ -222,7 +223,7 @@ function createWindow(): void {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.snowhub.dashboard')
 
@@ -394,10 +395,31 @@ app.whenReady().then(() => {
   })
 
 
+  // Initialize i18n
+  await initI18n()
+
   // Initialize Sessions and extensions
   initializeSessions()
 
   // --- IPC HOOKS ---
+
+  // I18n
+  ipcMain.handle('get-language', () => store.get('language'))
+  ipcMain.handle('set-language', async (_, lng) => {
+    store.set('language', lng)
+    await changeLanguage(lng)
+    
+    // Notify all windows
+    const effectiveLng = lng === 'auto' ? app.getLocale().split('-')[0] : lng
+    BrowserWindow.getAllWindows().forEach(win => {
+      if (!win.isDestroyed()) win.webContents.send('language-changed', effectiveLng)
+    })
+    
+    // Rebuild menus
+    updateTray()
+  })
+  
+  ipcMain.handle('get-app-version', () => app.getVersion())
 
   // Store Instances
   ipcMain.handle('get-instances', () => getInstances())
@@ -1091,7 +1113,7 @@ app.whenReady().then(() => {
 
     const template: Electron.MenuItemConstructorOptions[] = [
       {
-        label: 'Launch Instance',
+        label: t('main.context.launch'),
         click: () => {
           const instances = getInstances()
           const inst = instances.find((i) => i.id === instanceId)
@@ -1099,14 +1121,14 @@ app.whenReady().then(() => {
         }
       },
       {
-        label: 'Crear acceso directo en el escritorio',
+        label: t('main.context.create_shortcut'),
         click: () => {
           createShortcut(instanceId)
         }
       },
       { type: 'separator' },
       {
-        label: 'Edit Settings',
+        label: t('main.context.edit_settings'),
         click: () => {
           if (!event.sender.isDestroyed()) {
             event.sender.send('context-action-edit', instanceId)
@@ -1114,7 +1136,7 @@ app.whenReady().then(() => {
         }
       },
       {
-        label: 'Delete Instance',
+        label: t('main.context.delete_instance'),
         click: () => {
           if (!event.sender.isDestroyed()) {
             event.sender.send('context-action-delete', instanceId)
@@ -1163,7 +1185,7 @@ app.whenReady().then(() => {
     const instances = getInstances()
     const menuTemplate: (Electron.MenuItemConstructorOptions | Electron.MenuItem)[] = [
       {
-        label: 'Mostrar Dashboard',
+        label: t('main.tray.show_dashboard'),
         click: () => {
           const allWindows = BrowserWindow.getAllWindows()
           const mainWindow = allWindows.find(w => w.getTitle() === 'SNOW Hub Manager')
@@ -1180,7 +1202,7 @@ app.whenReady().then(() => {
 
     instances.forEach((inst) => {
       menuTemplate.push({
-        label: `Abrir ${inst.name}`,
+        label: t('main.tray.open_instance', { name: inst.name }),
         click: () => createInstanceWindow(inst)
       })
     })
@@ -1188,7 +1210,7 @@ app.whenReady().then(() => {
     menuTemplate.push({ type: 'separator' })
     
     menuTemplate.push({
-      label: 'Ejecutar en segundo plano',
+      label: t('main.tray.run_background'),
       type: 'checkbox',
       checked: store.get('runInBackground'),
       click: (menuItem) => {
@@ -1204,7 +1226,7 @@ app.whenReady().then(() => {
       }
     })
 
-    menuTemplate.push({ type: 'separator' }, { label: 'Salir', click: () => app.quit() })
+    menuTemplate.push({ type: 'separator' }, { label: t('main.tray.exit'), click: () => app.quit() })
     tray?.setContextMenu(Menu.buildFromTemplate(menuTemplate))
   }
 
@@ -1252,15 +1274,15 @@ app.whenReady().then(() => {
         .trim()
 
       if (cleanNotes) {
-        releaseNotes = `\n\nNovedades:\n${cleanNotes}`
+        releaseNotes = t('main.update.release_notes', { notes: cleanNotes })
       }
     }
 
     dialog.showMessageBox({
       type: 'info',
-      title: 'Actualización lista',
-      message: `La versión ${info.version} de Snow Hub ha sido descargada satisfactoriamente.${releaseNotes}\n\nSe instalará automáticamente al cerrar la aplicación.`,
-      buttons: ['Aceptar', 'Reiniciar ahora']
+      title: t('main.update.ready_title'),
+      message: t('main.update.ready_message', { version: info.version, releaseNotes }),
+      buttons: [t('main.update.accept'), t('main.update.restart')]
     }).then((result) => {
       if (result.response === 1) {
         autoUpdater.quitAndInstall()

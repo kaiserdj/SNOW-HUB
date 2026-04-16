@@ -1,0 +1,108 @@
+{
+  "common": {
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "error": "Error",
+    "success": "Éxito",
+    "loading": "Cargando..."
+  },
+  "dashboard": {
+    "system_online": "Sistema Online",
+    "title": "SNOW Hub",
+    "subtitle_part1": "Gestión profesional de instancias con ",
+    "subtitle_highlight": "aislamiento reforzado",
+    "subtitle_end": " y utilidades para desarrolladores.",
+    "add_instance": "Añadir Instancia",
+    "edit_instance": "Editar Instancia",
+    "new_workspace": "Nuevo Espacio de Trabajo",
+    "instance_desc": "Define los parámetros para tu entorno aislado de ServiceNow.",
+    "branding": "Personalización del Espacio",
+    "label": "Etiqueta de Instancia",
+    "url": "URL de Conexión",
+    "secure_vault": "Inyección Segura de Credenciales",
+    "username": "Usuario",
+    "password": "Contraseña",
+    "deploy": "Desplegar Configuración",
+    "verified": "Verificado",
+    "isolated": "Cookies Aisladas",
+    "launch": "Lanzar",
+    "empty_title": "Flota Vacía",
+    "empty_desc": "Tu flota de navegadores está inactiva. Despliega tu primera instancia de ServiceNow para comenzar.",
+    "start_deployment": "Comenzar Despliegue",
+    "delete_confirm": "¿Estás seguro de que quieres eliminar esta instancia?",
+    "shortcut_created": "Acceso directo creado en el escritorio.",
+    "shortcut_error": "Error al crear el acceso directo."
+  },
+  "instance": {
+    "new_tab": "Nueva Pestaña",
+    "sn_utils_popup": "SN Utils Popup",
+    "sn_utils_settings": "SN Utils Ajustes",
+    "back": "Atrás",
+    "forward": "Adelante",
+    "refresh": "Recargar",
+    "address_placeholder": "Buscar o introducir dirección",
+    "table_name": "Nombre de Tabla",
+    "sys_id": "SysID",
+    "copy_url": "Copiar URL"
+  },
+  "settings": {
+    "header": "Ajustes Generales",
+    "language": "Idioma",
+    "version": "Versión",
+    "credits": "Créditos",
+    "creator": "Creado por kaiserdj",
+    "close": "Cerrar"
+  },
+  "main": {
+    "tray": {
+      "show_dashboard": "Mostrar Dashboard",
+      "open_instance": "Abrir {{name}}",
+      "run_background": "Ejecutar en Segundo Plano",
+      "exit": "Salir"
+    },
+    "context": {
+      "launch": "Lanzar Instancia",
+      "create_shortcut": "Crear Acceso Directo",
+      "edit_settings": "Editar Ajustes",
+      "delete_instance": "Eliminar Instancia"
+    },
+    "update": {
+      "ready_title": "Actualización Lista",
+      "ready_message": "La versión {{version}} de Snow Hub ha sido descargada satisfactoriamente.{{releaseNotes}}\n\nSe instalará automáticamente al cerrar la aplicación.",
+      "release_notes": "\n\nNovedades:\n{{notes}}",
+      "accept": "Aceptar",
+      "restart": "Reiniciar Ahora"
+    },
+    "webview_context": {
+      "open_new_tab": "Abrir enlace en nueva pestaña",
+      "copy_link": "Copiar dirección del enlace",
+      "copy_image": "Copiar imagen",
+      "save_image": "Guardar imagen como...",
+      "search_selection": "Buscar \"{{selection}}\"",
+      "instance_search": "Búsqueda en la instancia",
+      "codesearch": "SN Utils Code Search",
+      "open_script_include": "Abrir Script Include",
+      "table_list": "Lista de tabla",
+      "property": "Propiedad",
+      "back": "Atrás",
+      "forward": "Adelante",
+      "refresh": "Recargar",
+      "sn_utils": {
+        "technical_names": "Nombres técnicos (/tn)",
+        "pop_out": "PopIn / PopOut (/pop)",
+        "unhide_fields": "Mostrar campos ocultos (/uh)",
+        "cancel_transactions": "Cancelar transacciones",
+        "updates_today": "Actualizaciones de hoy",
+        "update_versions": "Versiones de actualización",
+        "stats": "stats.do",
+        "clear_cache": "Limpiar Caché e Instancia",
+        "clear_cookies": "Borrar Cookies (Logout)",
+        "goto_list_sysid": "Ir a la lista (sys_id)",
+        "open_popup": "Abrir Popup de SN Utils",
+        "open_scriptsync": "Abrir sn-scriptsync Helper"
+      },
+      "inspect": "Inspeccionar elemento"
+    }
+  }
+}

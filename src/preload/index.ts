@@ -57,7 +57,17 @@ const api = {
   // New
   pickIcon: () => ipcRenderer.invoke('pick-icon'),
   createDesktopShortcut: (instanceId) => ipcRenderer.invoke('create-desktop-shortcut', instanceId),
-  executeJavaScript: (instanceId, tabId, script) => ipcRenderer.invoke('execute-javascript', instanceId, tabId, script)
+  executeJavaScript: (instanceId, tabId, script) => ipcRenderer.invoke('execute-javascript', instanceId, tabId, script),
+  
+  // I18n
+  getLanguage: () => ipcRenderer.invoke('get-language'),
+  setLanguage: (lng) => ipcRenderer.invoke('set-language', lng),
+  getAppVersion: () => ipcRenderer.invoke('get-app-version'),
+  onLanguageChanged: (callback) => {
+    const handler = (_, lng) => callback(lng)
+    ipcRenderer.on('language-changed', handler)
+    return () => ipcRenderer.removeListener('language-changed', handler)
+  }
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
