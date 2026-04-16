@@ -72,6 +72,11 @@ The output will be available in the `dist` folder.
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## 🙏 Acknowledgments
+
+- **[SN Utils](https://arnoudkooi.com/)**: This project integrates the incredible [SN Utils](https://github.com/arnoudkooi/ServiceNow-Utils) extension created by **Arnoud Kooi**. All credits for the extension logic and features go to him.
+- **ServiceNow**: For providing the platform that makes this tool necessary and useful.
+
 ---
 
 Crafted with ❤️ for the ServiceNow Developer Community.
