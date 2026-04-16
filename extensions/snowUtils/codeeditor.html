@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Editor</title>
+
+    <link rel="stylesheet" href="css/codeeditor.css">
+    <script src="js/monaco/vs/loader.js"></script>
+    <script src="js/monaco/libsource.js"></script>
+    <script src="js/monaco/codeeditor.js"></script>
+
+</head>
+
+<body>
+    <section id="snUtilsMonocoEditor">
+        <header id="header">
+            <div class="title">
+                <span class="title" id="title">
+                    Reloading doesn't work &#128517;
+                </span>
+                <select class="versions" title="Select version to compare with current">
+                   
+                </select>
+                <a title="Open selected sys_update_version record" class="version" target="_blank" href="#"> ⬈ </a>
+            </div>
+            <div id="state">
+
+
+                <!-- <div class="btn-group btns" title="Swith the autocomplete library">
+                    <button id="sercerglobal" type="button" class="btn">Server<div>Global</div></button>
+                    <button id="sercerscoped" class="btn">Server<div>Scoped</div></button>
+                    <button id="client" class="btn">Client<div></div></button>
+                  </div> -->
+                <button id="save">Save</button>
+            </div>
+        </header>
+        <section id="container"></section>
+        <footer id="snutils-monoco-footer">
+            <div class="record-meta"></div>
+            <span id="response"></span>
+        </footer>
+    </section>
+</body>
+
+</html>

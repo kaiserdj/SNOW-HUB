@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScriptSync Helper - SN Utils</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/scriptsync.css">
+
+    <script src="js/purify.min.js"></script>
+    <script src="js/theme-toggle.js"></script>
+    <script src="scriptsync.js"></script>
+    
+    <base href="#">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header Bar -->
+        <header class="header-bar">
+            <div class="header-brand">
+                <img class="header-logo" src="images/icons/icon.svg" alt="SN Utils logo" />
+                <div class="header-title">
+                    <span class="header-title-main">SN Utils</span>
+                    <span class="header-title-sub">ScriptSync Helper</span>
+                </div>
+            </div>
+            <div class="header-controls">
+                <div class="theme-toggle" title="Toggle dark/light mode">
+                    <button id="theme-toggle-btn" class="btn-theme" aria-label="Toggle theme">
+                        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"/>
+                            <line x1="12" y1="1" x2="12" y2="3"/>
+                            <line x1="12" y1="21" x2="12" y2="23"/>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                            <line x1="1" y1="12" x2="3" y2="12"/>
+                            <line x1="21" y1="12" x2="23" y2="12"/>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                        </svg>
+                        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Accent Line -->
+        <div class="accent-line"></div>
+
+        <!-- Preview Notice -->
+        <div class="preview-notice">
+            <span class="preview-badge">PREVIEW</span>
+            <span>This is a preview of the refreshed SN Utils UI coming in 2026. New actions in sn-scriptsync 5.0 enable AI Agents to interact via ScriptSync! <a target="_blank" href="https://marketplace.visualstudio.com/items?itemName=arnoudkooicom.sn-scriptsync">Read more</a></span>
+        </div>
+
+        <!-- Alert for new instance -->
+        <div class="alert alert-info hidden" id="instanceapprovediv" role="alert">
+            <div class="alert-content">
+                <h5>New Instance Connection</h5>
+                <p>Allow ScriptSync to interact with <b id="instanceurl">instance</b>?</p>
+                <div class="alert-actions">
+                    <button type="button" id="instanceallow" class="btn btn-success">Allow</button>
+                    <button type="button" id="instanceblock" class="btn btn-danger">Block</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Tabs Bar -->
+            <div class="tabs-wrapper">
+                <ul class="nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="activity-tab" data-tab-target="#activity" type="button">Activity Log</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="instances-tab" data-tab-target="#instances" type="button">Instances</button>
+                    </li>
+                </ul>
+                <div class="tabs-bar-right">
+                    <div class="form-check" title="Reload active tab on save, to see result of the update">
+                        <input class="form-check-input snu-setting" type="checkbox" id="reloadactivetab" name="reloadactivetab">
+                        <label class="form-check-label" for="reloadactivetab">
+                            Reload active tab on save
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane active" id="activity" role="tabpanel">
+                    <div class="table-container">
+                        <table id="synclog" class="table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 130px;">Time</th>
+                                    <th style="width: 120px;">Origin</th>
+                                    <th>Message</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane" id="instances" role="tabpanel">
+                    <div class="instances-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Allowed Instances</h5>
+                            </div>
+                            <div class="card-body">
+                                <ul id="intanceslistallowed" class="instance-list">
+                                    <li>-none-</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Blocked Instances</h5>
+                            </div>
+                            <div class="card-body">
+                                <ul id="intanceslistblocked" class="instance-list">
+                                    <li>-none-</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Banner Message -->
+            <div id="bannermessage" class="alert alert-info mt-4" role="alert">
+                Welcome to the ScriptSync helper tab.
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <span>SN Utils is a product by SN Utils B.V.</span>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

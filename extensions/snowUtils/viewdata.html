@@ -1,0 +1,70 @@
+<html data-bs-theme="dark">
+
+<head>
+  <title>View data - SN Utils</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/datatables.min.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/viewdata.css">
+
+
+  <script src="js/purify.min.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/moment.js"></script>
+  <script src="js/datatables.min.js"></script>
+  <script src="js/datatables-datetime.js"></script>
+
+  <base href="#">
+</head>
+
+<body>
+  <div id="fixheader">
+    <div id="title"><img class="wdth40" src="images/icon128.png" alt="SN Utils logo" /> View Data details &nbsp;&nbsp;
+      <span id="whotheheck">Table | Created | Updated</span>
+    </div>
+    <div class="input-group">
+      <input type="search" id="tbxdataexplore" name="tbxdataexplore" class="form-control form-control-sm sync"
+        placeholder="Search data...">
+      <div id="divhideempty">
+        <input class="form-check-input sync" type="checkbox" id="cbxhideempty" name="cbxhideempty">
+        <label class="form-check-label" for="cbxhideempty" title="Hide rows where the field is empty">
+          Hide empty rows.
+        </label></input>
+      </div>
+      <button id='btnrefreshdataexplore' class="btn btn-outline-secondary btn-sm" title="Refresh data"
+        type="button">Refresh</button>
+    </div>
+  </div>
+  <table id="dataexplore" class="display table-condensed dxp">
+    <thead>
+      <tr>
+        <th>Label</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Value</th>
+        <th>Display Value</th>
+        <th>Has Data</th>
+      </tr>
+    </thead>
+  </table>
+
+  <div id="fieldDetailsModal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="fieldmodalTableHeader">fieldname</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="fieldmodalTableContent">
+          fielddetails
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="viewdata.js"></script>
+</body>
+
+</html>
