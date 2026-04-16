@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>SN Utils by arnoudkooi.com</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/datatables.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script src="js/purify.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.deserialize.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/moment.js"></script>
+    <script src="js/datatables.min.js"></script>
+    <script src="js/datetime-moment.js"></script>
+    <script src="js/md5.js"></script>
+    <script src="inject.js"></script>
+    <script src="popup.js"></script>
+</head>
+
+<body>
+    <!-- <a id=patreon title="Support SN Utils on Patreon" href="https://www.patreon.com/snutils" target="_blank">&#10084;&#65039;</a> -->
+
+    <div id="content">
+        <form>
+            <input id='tbxactivetab' name='tbxactivetab' value="" class="sync" type="hidden" />
+            <ul class="nav nav-tabs compact" id="myTab">
+                <li class='nav-item onlyadmin'>
+                    <a class="nav-link" data-bs-target="#tabupdatesets" data-bs-toggle="disabledtab">Update Set
+                        <span id="waitingupdatesets" class="waiting">
+                            <i class='fas fa-spinner fa-spin' aria-hidden='true'></i>
+                        </span>
+                    </a>
+                </li>
+                <li class='nav-item onlyadmin'>
+                    <a class="nav-link" data-bs-target="#tabupdates" data-bs-toggle="disabledtab">Updates
+                        <span id="waitingupdates" class="waiting">
+                            <i class='fas fa-spinner fa-spin' aria-hidden='true'></i>
+                        </span>
+                    </a>
+                </li>
+                <li class='nav-item onlyadmin'>
+                    <a class="nav-link" data-bs-target="#tabnodes" data-bs-toggle="disabledtab">Nodes
+                        <span id="waitingnodes" class="waiting">
+                            <i class='fas fa-spinner fa-spin' aria-hidden='true'></i>
+                        </span>
+                    </a>
+                </li>
+                <li class='nav-item'>
+                    <a class="nav-link" data-bs-target="#tabtables" data-bs-toggle="disabledtab">Tables
+                        <span id="waitingtables" class="waiting">
+                            <i class='fas fa-spinner fa-spin' aria-hidden='true'></i>
+                        </span>
+                    </a>
+                </li>
+                <li class='nav-item'>
+                    <a class="nav-link" data-bs-target="#tabdataexplore" data-bs-toggle="disabledtab">View Data
+                        <span id="waitingdataexplore" class="waiting">
+                            <i class='fas fa-spinner fa-spin' aria-hidden='true'></i>
+                        </span>
+                    </a>
+                </li>
+                <li class='nav-item'>
+                    <a class="nav-link" data-bs-target="#tabuser" data-bs-toggle="disabledtab">User
+                        <span id="waitinguser" class="waiting">
+                            <i class='fas fa-spinner fa-spin' aria-hidden='true'></i>
+                        </span>
+                    </a>
+                </li>
+                <li class='nav-item'>
+                    <a class="nav-link" data-bs-target="#tabgr" data-bs-toggle="disabledtab">GlideRecord</a>
+                </li>
+                <li class='nav-item'>
+                    <a class="nav-link" data-bs-target="#tabslashcommands" data-bs-toggle="disabledtab" id='navslashcommands'>Slashcommands</a>
+                </li>
+                <!-- <li class='nav-item'>
+                    <a class="nav-link" data-bs-target="#tabshortcuts" data-bs-toggle="disabledtab">Shortcuts</a>
+                </li>             -->
+                <li class='nav-item'>
+                    <a class="nav-link" data-bs-target="#tabsettings" data-bs-toggle="disabledtab">Settings</a>
+                </li>
+                <!-- <li class='nav-item'>
+                    <a class="nav-link" data-bs-target="#tabwhitelist" data-bs-toggle="disabledtab">Whitelist</a>
+                </li> -->
+                <li class='nav-item'>
+                    <a class="nav-link active" data-bs-target="#tababout" data-bs-toggle="disabledtab">About</a>
+                </li>
+                <li class='highlightli'>
+                    <a class="highlightlink" target="_blank" href="https://www.linkedin.com/company/sn-utils">Follow <?xml version="1.0" ?><svg height="16" viewBox="0 0 72 72" width="16" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M8,72 L64,72 C68.418278,72 72,68.418278 72,64 L72,8 C72,3.581722 68.418278,-8.11624501e-16 64,0 L8,0 C3.581722,8.11624501e-16 -5.41083001e-16,3.581722 0,8 L0,64 C5.41083001e-16,68.418278 3.581722,72 8,72 Z" fill="#007EBB"/><path d="M62,62 L51.315625,62 L51.315625,43.8021149 C51.315625,38.8127542 49.4197917,36.0245323 45.4707031,36.0245323 C41.1746094,36.0245323 38.9300781,38.9261103 38.9300781,43.8021149 L38.9300781,62 L28.6333333,62 L28.6333333,27.3333333 L38.9300781,27.3333333 L38.9300781,32.0029283 C38.9300781,32.0029283 42.0260417,26.2742151 49.3825521,26.2742151 C56.7356771,26.2742151 62,30.7644705 62,40.051212 L62,62 Z M16.349349,22.7940133 C12.8420573,22.7940133 10,19.9296567 10,16.3970067 C10,12.8643566 12.8420573,10 16.349349,10 C19.8566406,10 22.6970052,12.8643566 22.6970052,16.3970067 C22.6970052,19.9296567 19.8566406,22.7940133 16.349349,22.7940133 Z M11.0325521,62 L21.769401,62 L21.769401,27.3333333 L11.0325521,27.3333333 L11.0325521,62 Z" fill="#FFF"/></g></svg></a>
+                </li>
+
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane" id="tabshortcuts">
+                    <div class="input-group">
+                        <input type="search" id="tbxshortcuts" name="tbxshortcuts" class="form-control form-control-sm w-50 sync"
+                            placeholder="Search shortcuts">
+                            <button id='btnshortcuts' class="btn btn-outline-secondary btn-sm"
+                                title="Force refresh of the ServiceNow shortcuts" type="button">Refresh</button>
+                    </div>
+
+                    <table id="shrtcuts" class="display table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Shortcut</th>
+                                <th>Slash command</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="tab-pane" id="tabupdatesets">
+                    <div class="input-group">
+                        <input type="search" id="tbxupdatesets" name="tbxupdatesets"
+                            class="form-control form-control-sm sync"
+                            placeholder="Search in progress update set in current scope...">
+                        <button class="btn btn-outline-secondary btn-sm" type="button">Go!</button>
+                    </div>
+                    <table id="updatesets" class="display table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Update set</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <span class="fonteight">
+                        <a class="popuplinks" id='btnnewupdateset' href='' target="_blank">New updateset...</a>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a class="popuplinks" id='btnopenupdatesets' target="_blank">Update Sets - In Progress</a>
+                    </span>
+                </div>
+                <div class="tab-pane" id="tabupdates">
+
+                    <div class="input-group">
+                        <input type="search" id="tbxupdates" name="tbxupdates" class="form-control form-control-sm sync"
+                            placeholder="Search in your last 20 updates...">
+                        <button class="btn btn-outline-secondary btn-sm" type="button">Go!</button>
+                    </div>
+                    <table id="updts" class="display table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Name</th>
+                                <th>Updated</th>
+                                <th>Update set</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+                <div class="tab-pane" id="tabnodes">
+                    <div class="d-flex align-items-center mb-1">
+                        <div class="input-group flex-grow-1">
+                             <input type="search" id="tbxnodes" name="tbxnodes" class="form-control form-control-sm" placeholder="Search Instance Nodes...">
+                            <button id="btnrefreshnodes" class="btn btn-outline-secondary btn-sm" type="button" title="Refresh Node List">
+                                <i class="fas fa-sync"></i> Refresh Nodes
+                                <span id="waitingnodes" style="display:none; margin-left: 5px;"><i class='fas fa-spinner fa-spin'></i></span>
+                            </button>
+                        </div>
+                        <a href="#" id="toggleDbMetaBtn" class="btn btn-outline-secondary btn-sm ms-2" title="Toggle DB Info" role="button">
+                           <img id="dbicon" src="images/database.png" alt="Database Icon">
+                        </a>
+                        <input type="checkbox" id="cbxdbmetavisible" name="cbxdbmetavisible" class="snu-setting d-none">
+
+                    </div> 
+
+                    <div id="dbmeta" class="db-meta-info my-2" style="display: none;">
+                        <span class="nerds-only-label">Nerds only 🤓</span>
+                        <div class="db-detail-item">
+                            <span class="db-label">DB Name:</span>
+                            <span class="db-value" id="dbNameValue">Loading...</span>
+                        </div>
+                        <div class="db-detail-item">
+                            <span class="db-label">JDBC URL:</span>
+                            <span class="db-value" id="dbUrlValue">Loading...</span>
+                        </div>
+
+                        <div class="db-detail-item">
+                            <span class="db-label">Airport code:</span>
+                            <span class="db-value" id="dbAirportCode"></span>
+                        </div>
+                        <div class="db-detail-item">
+                            <span class="db-label">Session ID:</span>
+                            <span class="db-value" id="dbSessionValue">Loading...</span>
+                        </div>
+                    </div>
+                     <div id="nodemessage" class="alert alert-warning hidden" role="alert"></div>
+                    <table id="instancenodes" class="display table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Node</th>
+                                <th>Full name</th>
+                                <th>Status</th>
+                                <th>Node Type</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="tab-pane" id="tabtables">
+
+                    <div class="input-group">
+                        <input type="search" id="tbxtables" name="tbxtables" class="form-control form-control-sm w-50 sync"
+                            placeholder="Search tables...                           >> Select dataset: Default, Advanced or Custom Tables >>">
+
+                            <select name="slctdataset" id="slctdataset" class="form-select form-select-sm sync wdth"
+                                title="Select dataset: Default, Advanced or Custom Tables">
+                                <option value="default">Default</option>
+                                <option value="advanced">Advanced</option>
+                                <option value="customtables">Custom Tables</option>
+                            </select>
+                            <button id='btnrefreshtables' class="btn btn-outline-secondary btn-sm"
+                                title="Force refresh of the ServiceNow tables (API Call)" type="button">Refresh</button>
+                    </div>
+
+                    <table id="tbls" class="display table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Label</th>
+                                <th id="thaction">Table</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div id="divtblinfo" ></div>
+                    <select class="form-select form-select-sm sync mtfive" id="slctlistquery" name="slctlistquery">
+                        <option value="&sysparm_filter_only=true&sysparm_filter_pinned=true">Listview query: None
+                            (filter only, don't show records)</option>
+                        <option
+                            value="&sysparm_filter_pinned=true">
+                            Listview query: None (filter pinned, show all records)</option>
+                        <option
+                            value="sys_updated_onONToday@javascript:gs.beginningOfToday()@javascript:gs.endOfToday()^ORDERBYDESCsys_updated_on&sysparm_filter_pinned=true">
+                            Listview
+                            query: Updated on Today / Order by Updated desc.</option>
+                    </select>
+                    <!--<a href='/snutils.html' target='_blank' >Open this table list in new tab.</a>-->
+                </div>
+
+                <div class="tab-pane" id="tabdataexplore">
+                    <div class="input-group">
+                        <input type="search" id="tbxdataexplore" name="tbxdataexplore"
+                            class="form-control form-control-sm sync" placeholder="Search data...">
+                        <div id="divhideempty">
+                            <input class="form-check-input sync" type="checkbox" id="cbxhideempty" name="cbxhideempty">
+                            <label class="form-check-label" for="cbxhideempty"
+                                title="Hide rows where the field is empty">
+                                Hide empty rows.
+                            </label></input>
+                        </div>
+                        <button id='btnrefreshdataexplore' class="btn btn-outline-secondary btn-sm"
+                            title="Refresh data" type="button">Refresh</button>
+                    </div>
+                    <table id="dataexplore" class="display table-condensed dxp">
+                        <thead>
+                            <tr>
+                                <th>Label</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Value</th>
+                                <th>Display Value</th>
+                                <th>Has Data</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div>🌟 Tip: Open this view (but better) in a new tab via slashcommand /vd or a shift-click on the ? button, <a id="vdnewtab" href="#">or click here</a>.</div> 
+
+                </div>
+
+                <div class="tab-pane" id="tabuser">
+                    <div class="input-group">
+                        <input type="search" id="tbxname" name="tbxname" class="form-control form-control-sm"
+                            placeholder="Search by username...">
+                        <button id='btnGetUser' class="btn btn-outline-secondary btn-sm" type="button">Go!</button>
+                    </div>
+                    <div id="rspns"></div>
+                </div>
+
+                <div class="tab-pane" id="tabgr">
+                    <div class="input-group">
+                        <input id="tbxgrname" name="tbxgrname" class="form-control form-control-sm"
+                            placeholder="Change default grTableName variable...">
+                        <button id='btnSetGRName' class="btn btn-outline-secondary btn-sm" type="button">Create
+                            GlideRecord Template.</button>
+                    </div>
+                    <div class="form-group">
+                        <label for="tbxgrtemplate">Template for fields: ({0} = variable like gr, {1} = field name like
+                            sys_created_on)</label>
+                        <div class="input-group">
+
+                            <select class="form-select form-select-sm sync" name="tbxgrtemplate" id="tbxgrtemplate">
+                                <option>gs.info('{1}: ' + {0}.getValue('{1}'));</option>
+                                <option>{0}.getValue('{1}');</option>
+                                <option>{0}.setValue('{1}','');</option>
+                                <option>gs.addInfoMessage('{1}: ' + {0}.{1});</option>
+                                <option>{0}.{1}</option>
+                                <option>{0}.{1} = '';</option>
+                                <option value=''>- none -</option>
+                            </select>
+                            <div class="input-group-text">
+                                <div class="form-check push5up">
+
+                                    <input class="form-check-input sync" type="checkbox" id="cbxtemplatelines"
+                                        name="cbxtemplatelines">
+                                    <label class="form-check-label" for="cbxtemplatelines"
+                                        title="Adds commented lines to the template for like .update() .insert() ">
+                                        Helper lines.
+                                    </label></input><br />
+                                    <input class="form-check-input sync" type="checkbox" id="cbxfullvarname"
+                                        name="cbxtemplatelines">
+                                    <label class="form-check-label" for="cbxfullvarname"
+                                        title="Use full varname for long table names like grMyLongTableName instead of grMLTN">
+                                        Full var name.
+                                    </label></input>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <textarea class="form-control form-control-sm grtemplate" autocomplete="off"
+                        autocapitalize="off" spellcheck="false" id="txtgrquery"></textarea>
+
+                        <div class="btns btnspadding">
+                            <div class="dt-buttons"> 
+                                <button id="btnopengrquery" class="dt-button" type="button"><span>Open in backgroundscript</span></button>
+                            </div>
+                        </div>
+
+                    <br />
+
+                </div>
+
+                <div class="tab-pane" id="tabrest">
+
+                    <textarea class="form-control form-control-sm grtemplate" autocomplete="off" autocapitalize="off"
+                        spellcheck="false" id="txtrest"></textarea>
+
+                    <br />
+                </div>
+
+                <div class="tab-pane" id="tabsettings">
+                    <h5>Settings <i>(Reload browser after changing settings to take affect)</i></h5>
+
+                    <div class="row">
+                        <div class="col-6" id='settingsdiv'>
+                            <form>
+                                <div class="form-check">
+                                    <input class="form-check-input snu-setting" type="checkbox" id="instancetag"
+                                        name="instancetag">
+                                    <label class="form-check-label" for="instancetag">
+                                        Enable InstanceTag (Show a draggable button)
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input snu-setting" type="checkbox" checked="checked" id="vsscriptsync"
+                                        name="vsscriptsync">
+                                    <label class="form-check-label" for="vsscriptsync">
+                                        Enable sn-scriptsync buttons (VS Code)
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input snu-setting" type="checkbox" checked="checked" id="codeeditor"
+                                        name="codeeditor">
+                                    <label class="form-check-label" for="codeeditor">
+                                        Enable Code Editor buttons (Monaco Code Editor)
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input snu-setting" type="checkbox" id="addtechnicalnames"
+                                        name="addtechnicalnames">
+                                    <label class="form-check-label" for="addtechnicalnames">
+                                        Show Technical names on page load
+                                    </label>
+                                    <!-- <div id="technicalnamesregexdiv">
+                                    <label class="form-check-label" for="slashoption">
+                                        Optional instance regex:
+                                    </label>
+                                    <input type="text" class="snu-setting" id="technicalnamesregex" />
+                                    </div> -->
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input snu-setting" type="checkbox" id="nouielements"
+                                        name="nouielements">
+                                    <label class="form-check-label" for="nouielements">
+                                        Don't add UI elements to browser
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input snu-setting" checked="checked" type="checkbox" id="applybgseditor"
+                                        name="applybgseditor">
+                                    <label class="form-check-label" for="applybgseditor">
+                                        Enhance Background Script Editor
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input snu-setting" type="checkbox" id="nopasteimage"
+                                        name="nopasteimage">
+                                    <label class="form-check-label" for="nopasteimage">
+                                        Disable CTRL/CMD-V to paste Clipboard image.
+                                    </label>
+                                </div>
+                                <div class="form-check" title="May not update when updated from other tab. Use /s2 to toggle between default and s2 type">
+                                    <input class="form-check-input snu-setting" type="checkbox" id="s2ify" checked="checked"
+                                        name="s2ify">
+                                    <label class="form-check-label" for="s2ify">
+                                        Show (Application and Updateset) Pickers in Next UI Header
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input snu-setting" type="checkbox" id="highlightdefaultupdateset"
+                                        name="highlightdefaultupdateset" checked="checked">
+                                    <label class="form-check-label" for="highlightdefaultupdateset">
+                                        Highlight default update set in Next Experience.
+                                    </label>
+                                </div>
+                                <div class="form-check" title="">
+                                    <input class="form-check-input snu-setting" type="checkbox" id="slashnavigatorsearch" 
+                                        name="slashnavigatorsearch" checked="checked">
+                                    <label class="form-check-label" for="slashnavigatorsearch">
+                                        Include navigator search in slashcommands without /m command (Next Experience only).
+                                    </label>
+                                </div> 
+                                <div class="form-check" title="">
+                                    <input class="form-check-input snu-setting" type="checkbox" id="opentabonupdate" 
+                                        name="opentabonupdate" checked="checked">
+                                    <label class="form-check-label" for="slashnavigatorsearch">
+                                        Open a new browser tab for important SN Utils news and updates.
+                                    </label>
+                                </div> 
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="toggle-changelog-badge" 
+                                    name="toggle-changelog-badge" checked="checked">
+                                    <label class="form-check-label" for="toggle-changelog-badge">
+                                        Show "New" badge when extension updated.
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="col-6" id='settingsdiv'>
+                            <form>
+                                <div class="form-check">
+                                    <label class="form-check-label" for="slashoption">
+                                        Slashcommands:
+                                    </label>
+                                    <div class="form-check" title="">
+                                        <input class="form-check-input snu-setting" type="checkbox" checked="checked" id="slashpopuppriority" 
+                                            name="slashpopuppriority" >
+                                        <label class="form-check-label" for="slashpopuppriority" title="Prioritize the slashcommand popup above shortcuts, hit shortcut again to show shortcuts">
+                                            Prioritize CTRL-/ and CMD-/ above OOB shortcut.
+                                        </label>
+                                    </div> 
+                                    <select class="snu-setting form-select form-select-sm" name="slashoption"
+                                        id="slashoption">
+                                        <option value="on">On - Activate on / or CTRL-/</option>
+                                        <option value="ctrl">On - Activate on CTRL-/</option>
+                                        <option value="off" title="Off or Configure via Extensions Shortcuts settings">
+                                            Off - Can set custom shortcut</option>
+                                    </select>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label" for="slashtheme">
+                                        Slash popup theme:
+                                    </label>
+                                    <select class="snu-setting form-select form-select-sm" name="slashtheme"
+                                        id="slashtheme">
+                                        <option value="dark">Dark</option>
+                                        <option value="light">Light</option>
+                                        <option value="stealth">Stealth (almost invisible)</option>
+                                        <option value="theme">Follow Instance Theme (beta)</option>
+                                    </select>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label" for="slashhistory">
+                                        Locally store last used slash commands per instance:
+                                    </label>
+                                    <select class="snu-setting form-select form-select-sm" name="slashhistory"
+                                        id="slashhistory">
+                                        <option value="0">0 - disabled</option>
+                                        <option>20</option>
+                                        <option selected="selected">50</option>
+                                        <option>100</option>
+                                        <option>200</option>
+                                    </select>
+                                </div>   
+                                <div class="form-check">
+                                    <label class="form-check-label" for="listfields">
+                                        One click personalise list fields:
+                                    </label>
+                                    <input class="snu-setting form-control form-control-sm" name="listfields"
+                                        id="listfields" value="sys_updated_on,sys_updated_by,sys_scope,sys_created_on" />
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-check" title="">
+                        <input class="form-check-input snu-setting" type="checkbox" checked="checked" id="iconallowbadge"
+                            name="iconallowbadge">
+                        <label class="form-check-label" for="iconallowbadge">
+                            Allow favicon badge overlay to identify instances.
+                        </label><br />
+                    </div>
+                    <div id="iconsettingsdiv">
+                    Favicon badge for instance: <b id="instancename"></b><br />
+                    <input title="Background color" type="color" id="iconcolorbg" name="iconcolorbg" class="snu-instance-setting" value="#ff3333" list="colorslist" />
+                    <input title="Text" type="text" id="icontext" name="icontext" maxlength="4" class="width30 snu-instance-setting" />
+                    <input title="Text color" type="color" id="iconcolortext" name="iconcolortext" class="snu-instance-setting" value="#ffffff" list="colorslist" >
+
+                    <datalist id="colorslist">
+                        <option value="#ff3333">
+                        <option value="#ffff33">
+                        <option value="#86ED78">
+                        <option value="#0066cc">
+                        <option value="#ff8000">
+                        <option value="#62D84E">
+                        <option value="#009156">
+                        <option value="#a0a0a0">
+                        <option value="#ffffff">
+                        <option value="#000000">
+                    </datalist>
+                  
+                    Width: <input type="range" min="7" max="16" value="7" class="slider snu-instance-setting" id="iconwidth"> 
+                    Height: <input type="range" min="7" max="16" value="9" class="slider snu-instance-setting" id="iconheight"> 
+                    Font: <input type="range" min="6" max="20" value="20" class="slider snu-instance-setting" id="iconfontsize">
+                </div>
+                    <hr />
+                    <h5>Slash Commands</h5>
+                    Advanced, please use the <a id="helperslashcommands" href='#tabslashcommands'>Slashcommands</a> tab to manage custom commands, or doubleclick textarea to open editor.
+                    <textarea class="form-control form-control-sm snu-setting" readonly="readonly" autocomplete="off" autocapitalize="off"
+                        spellcheck="false" id="slashcommands"
+                        placeholder="Go to slashcommands tab to create custom commands"></textarea>
+                    Advanced, <a href="https://arnoudkooi.com/switch" target="_blank">custom switches</a> . doubleclick textarea to open editor.
+                        <textarea class="form-control form-control-sm snu-setting" readonly="readonly" autocomplete="off" autocapitalize="off"
+                            spellcheck="false" id="slashsswitches"
+                            placeholder="Advanced, pro's only ;-)"></textarea>
+
+                    <hr />
+                    <h5>Monaco editor</h5>
+                    Apply following options to Monaco Script editor instances. (must be valid JSON). <a href="https://microsoft.github.io/monaco-editor/typedoc/interfaces/editor.IEditorConstructionOptions.html" target="_blank">Documentation</a> 
+                    <textarea class="form-control form-control-sm snu-setting" autocomplete="off" autocapitalize="off"
+                        spellcheck="false" id="monacooptions"
+                        placeholder="Go to slashcommands tab to create custom commands">{ "wordWrap" : "on", "contextmenu" : true }</textarea>
+                    <hr />
+                    
+                    <div class="hide-in-firefox">
+                        <h5>Shortcuts</h5>
+                        Go to <a class="popuplinks" href="chrome://extensions/shortcuts"
+                            target="_blank">chrome://extensions/shortcuts</a>
+                        to adjust the extension shortcuts.
+
+                        <br />
+                        <a class="popuplinks" target="_blank" href="https://www.youtube.com/watch?v=2ZoubJMePD8">
+                            <img class="halfwidth" src="images/shortcuts.png" alt="shortcuts" title="Shortcuts" />
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="tab-pane" id="tabslashcommands">
+                    <div class="input-group">
+                        <input type="search" id="tbxslashcommands" name="tbxslashcommands"
+                            class="form-control form-control-sm sync"
+                            placeholder="Search existing slashcommands..." />
+                        <button class="btn btn-outline-secondary btn-sm" type="button">Go!</button>
+                    </div>
+                    <div id="warningBackup" class="alert alert-warning mt-2" style="display: none;">
+                      <strong>⚠️ Warning!</strong> You have custom slash commands. Please <a id="backupCmdsLink" href="#">back them up</a> to prevent accidental loss.
+                    </div>
+                    
+
+                    <form>
+                        <div class="row" id="cmdform">
+                          <div class="form-group col-md-2">
+                            <label for="tbxslashcmd">Command</label>
+                            <input type="text" size="12" class="form-control form-control-sm" id="tbxslashcmd" />
+                          </div>
+                          <div class="form-group col-md-7">
+                            <label for="tbxslashurl">URL</label>
+                            <textarea class="form-control form-control-sm" id="tbxslashurl" ></textarea>
+                            <label class="showfields" for="tbxslashfields" title="Fields to return for inline search ie: name,sys_updated_on">Fields (comma separated, first 2 show in popup)</label>
+                            <input type="text" class="form-control form-control-sm showfields" id="tbxslashfields" placeholder="Fields to return for inline search ie: name,sys_updated_on" />
+                            <label class="showfields" for="tbxslashoverwriteurl" title="Optional, overwrite target URL for inline results">Overwrite target URL (variables: $sysid and defined fields as $fieldname)</label>
+                            <input type="text" class="form-control form-control-sm showfields" id="tbxslashoverwriteurl" placeholder="Optional, overwrite URL of inline results" />
+                            <div id="cmdformhelp">
+                                Variables:<br />
+                                $0 : Entire search string ($0, $1, $2 for individual words)<br />
+                                $sysid : Sys ID of current  record<br />
+                                $table : Tablename of current  record<br />
+                                <span id="cmdformhelpprefill"><br />Prefill:<br />
+                                <a id="cmdforma" href="">/incident.do</a>
+                                </span>
+                            </div>  
+                        </div>
+                          <div class="form-group col-md-3">
+                            <label for="tbxslashhint">Hint</label>
+                            <input type="text" class="form-control form-control-sm" id="tbxslashhint" />
+                            <label title="Initial order when opening the popup" for="tbxslashorder">Order</label>
+                            <input title="Initial order when opening the popup" type="number" class="form-control form-control-sm" id="tbxslashorder" />
+                            <button id="btnsaveslashcommand" class="btn btn-primary btn-sm float-right" >Save</button>
+                            <div id="divslashmsg"></div>
+                          </div>
+                        </div>
+                    </form>               
+                    
+                    <table id="tblslashcommands" class="display table-condensed">
+                        <thead>
+                            <tr>
+                                <th>*</th>
+                                <th>Command</th>
+                                <th>Details</th>
+                                <th>*</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <span class="fonteight">
+
+                    </span>
+                </div>
+
+
+                <div class="tab-pane" id="tabwhitelist">
+                    <h5>Whitelist <i>(Reload browser after changing settings to take affect)</i></h5>
+
+                    <textarea class="form-control form-control-sm whitelist snu-setting" autocomplete="off" autocapitalize="off"
+                        spellcheck="false" id="txtwhitelist"></textarea>
+
+                </div>
+
+                <div class="tab-pane active" id="tababout">
+                    <div class="about-header-row">
+                        <div class="about-title">
+                            SN Utils <span id="snuVersion"></span>
+                            
+                        </div>
+                        
+                        <div id="about-meta" class="about-meta">
+                            <span id="issue-template-icon" class="info-icon" title="Show issue template">ⓘ</span>
+                            <a href="http://arnoudkooi.com" target="_blank" title="Website">
+                                arnoudkooi.com <img src="images/globe.svg" alt="Site" class="icon-inline" />
+                            </a>
+                            <a href="https://www.linkedin.com/company/sn-utils" target="_blank" title="Follow on LinkedIn">
+                                <img src="images/linkedin.svg" alt="LinkedIn" class="icon-inline" />
+                            </a>
+                            <a href="https://www.linkedin.com/in/arnoudkooi/" target="_blank" title="Connect with Arnoud on LinkedIn">
+                                <img src="images/user-plus.svg" alt="Connect" class="icon-inline" />
+                            </a>
+                        </div>
+                    </div>
+                    <div id="notactive" class="alert alert-danger" role="alert">SN Utils does not run on the current page! <a href="https://www.arnoudkooi.com/sn-utils-does-not-run/" class=" alert-link" target="_blank">More info...</a></div>
+
+                    <div id="issue-template-container" class="issue-template-container" style="display: none; position: relative;">
+                      <div class="issue-template-header">
+                        <span class="issue-template-title"><a href="https://github.com/arnoudkooi/SN-Utils/issues" target="_blank">GitHub Issue</a> template</span>
+                        <button id="copy-issue-template" class="copy-btn" title="Copy issue template" type="button">Copy</button>
+                      </div>
+                      <pre id="issue-template-content"></pre>
+                    </div>
+                    <div id="highlight">
+                        <div style="margin-bottom: 0.5em;">
+                        </div>
+                        <div id="changelog" class="mt-2">
+                            <h5>
+                              Recent Changes
+                              <span id="changelog-badge" class="badge-new" style="display:none;" title="Click to dismiss for this version, disable in settings">New</span>
+                            </h5>
+                            <div id="changelog-content"></div>
+                        </div>
+                        <button id="show-more-changelog" class="changelog-toggle-btn">
+                          <span id="changelog-toggle-text">Show more changes</span>
+                          <span id="changelog-toggle-arrow" style="display:inline-block;transition:transform 0.2s;">▼</span>
+                        </button>
+                    </div>
+                    <div class="about-footer">
+                      <span>
+                        Source code is available on
+                        <a href="https://github.com/arnoudkooi/SN-Utils" target="_blank" class="github-link">
+                          <img src="images/github.svg" alt="GitHub" class="icon-inline" /> GitHub
+                        </a>
+                        for review purposes.
+                      </span>
+                      <span>This tool comes as is, with no warranty.</span>
+                      <span>Redistribution or copying of functionality is not allowed!</span>
+                    </div>
+                    <div id="livemessage"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Issue Template Modal -->
+    <div id="issue-template-modal" class="modal-overlay" style="display: none;">
+      <div class="modal-box">
+        <div class="modal-header">
+          <div class="modal-header-main">
+            <span class="modal-title">GitHub Issue template</span>
+            <button id="modal-copy-issue-template" class="copy-btn" title="Copy issue template" type="button">Copy</button>
+          </div>
+          <button id="close-issue-template-modal" class="modal-close" title="Close">&times;</button>
+        </div>
+        <pre id="modal-issue-template-content"></pre>
+      </div>
+    </div>
+</body>
+
+</html>

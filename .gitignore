@@ -1,0 +1,16 @@
+node_modules
+dist
+out
+.DS_Store
+.eslintcache
+*.log*
+.gemini
+antigravity-brain
+tmp
+.vscode
+*.sublime-project
+*.sublime-workspace
+.idea
+.env
+.env.*
+!.env.example

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Feature Request or General Question?
+    url: https://github.com/arnoudkooi/SN-Utils/discussions/new/choose
+    about: Use GitHub Discussions for ideas or questions. Issues are for bugs only.
+  - name: ℹ Instructions to include environment details
+    url: https://github.com/arnoudkooi/SN-Utils/blob/master/.github/template.md
+    about: Please read the instruction to ensure you include the environment details.

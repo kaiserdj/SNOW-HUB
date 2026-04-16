@@ -1,0 +1,24 @@
+name: Bug Report
+description: Report a bug in SN Utils
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please paste the information copied from the SN Utils popup below.  
+        Make sure to include a clear description and steps to reproduce. <a href="/arnoudkooi/SN-Utils/blob/master/.github/template.md" target="_blank">See instruction</a>
+
+  - type: textarea
+    id: report
+    attributes:
+      label: Bug Report
+      description: Paste the pre-filled issue content from SN Utils here.
+      placeholder: |
+        ### Description
+        <!-- Clearly describe the issue, include steps to reproduce and screenshots if possible -->
+
+        ### Environment details
+        - **User agent:
+        - **SN Utils Extension Version:
+        - **ServiceNow Version:
+    validations:
+      required: true

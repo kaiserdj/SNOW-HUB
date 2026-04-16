@@ -1,0 +1,238 @@
+:root {
+	--base-font-size: 14px;
+	--button-font-size: 14px;
+	--header-text-color: #fff;
+	--header-bg-color: var(--sn-brand-blue);
+	--header-border-bottom-color: var(--sn-brand-blue);
+	--button-bg-color: #51cf66;
+	--button-bg-color-hover: #37b24d;
+	--button-info-bg-color: #5274FF;
+	--button-info-bg-color-hover: #3970b3;
+	--transition-prop: all 100ms ease-in;
+	--padding: 1rem;
+	--sn-brand-blue: #032d42;
+}
+
+body,
+html {
+	padding: 0;
+	margin: 0;
+	height: calc(100vh - 3rem);
+	font-size: var(--base-font-size);
+	font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+}
+
+a:link, a:visited {
+	color:var(--button-bg-color);
+}
+a:hover {
+	color:var(--button-bg-color-hover);
+}
+a:active {
+	color:#fff;
+}
+
+#snUtilsMonocoEditor {
+	display: flex;
+	flex-flow: column nowrap;
+	height: 100vh;
+}
+
+#snUtilsMonocoEditor>#header {
+	align-items: center;
+	background: var(--header-bg-color);
+	border-bottom: 1px solid var(--header-border-bottom-color);
+	box-shadow: var(--header-box-shadow);
+	color: var(--header-text-color);
+	display: flex;
+	flex-direction: row;
+}
+
+#snUtilsMonocoEditor>#container {
+	height: calc((100vh - 5.1rem));
+	width: 100%;
+	box-sizing: border-box;
+}
+
+#snUtilsMonocoEditor>footer {
+	display: flex;
+	padding:.5rem 1rem;
+	background-color: var(--sn-brand-blue);
+	color: #fff;
+}
+
+.record-meta {
+	font-size: 15px;
+	padding: 8px 0;
+}
+.record-meta label.record-meta--label {
+	font-weight: 600;
+	display: inline-block;
+	padding-right: 0.75rem;
+}
+.record-meta span.record-meta--detail {
+	display: inline-block;
+	margin-right: 1.25rem;
+}
+
+
+h3 {
+	font-size: 16px;
+	margin-block: 3px;
+}
+
+#header>hr {
+	margin: 1em 0;
+}
+
+#header .title {
+	margin-left:.5rem;
+	width: 100%;
+
+}
+
+#header .title h3 {
+	display: inline;
+}
+
+
+#header .title h3 a:link {
+	color: var(--button-bg-color);
+	transition: var(--transition-prop);
+}
+
+#header .title h3 a:hover {
+	color: var(--button-bg-color-hover);
+	opacity: 0.5;
+}
+
+#header #state {
+	align-items: center;
+	display: flex;
+	flex-flow: row;
+	width: 100%;
+}
+
+#header .title span {
+	padding: 4px 3px 8px 3px;
+
+}
+
+section.vs-dark {
+	box-shadow: inset 0 -6px 5px -5px #000000;
+	background-color: #000000;
+	color: white;
+}
+
+section.vs-dark a {
+	color: #86ED78;
+	font-weight: normal;
+}
+
+section.vs-light {
+	box-shadow: inset 0 -6px 5px -5px #dddddd;
+}
+
+img.favicon {
+	width: 16px;
+	height: 16px;
+	margin-right: 5px;
+}
+
+.btns{
+	display: flex;
+}
+
+.btns button div{
+	font-size: 7pt;
+
+}
+
+.btns button{
+	background-color: var(--button-info-bg-color);
+	padding: 5px var(--padding);
+	border: 1px var(--sn-brand-blue);
+}
+.btns button:hover {
+	background-color: var(--button-info-bg-color-hover);
+}
+
+button {
+	background-color: var(--button-bg-color);
+	border: none;
+	color: white;
+	padding: 12px var(--padding);
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: var(--button-font-size, var(--base-font-size));
+	cursor: pointer;
+	margin-left: auto;
+	display: block;
+	transition: var(--transition-prop);
+}
+
+button:hover {
+	background-color: var(--button-bg-color-hover);
+}
+
+#response {
+	margin-left: auto;
+	font-size: var(--base-font-size);
+	margin-right: 1rem;
+	padding: 8px 0;
+}
+
+select.versions {
+
+	/* display: none; */
+
+	min-width: 200px;
+	padding: 5px;
+	margin: 4px;
+	font-size: 12px;
+	border: 1px solid #ffffff;
+	border-radius: 5px;
+	background-color: #06455b;
+	color: #ffffff;
+	/* appearance: none; Remove default arrow */
+	position: relative;
+	outline: none;
+}
+
+select.versions:focus {
+	outline: none;
+}
+
+select.versions option {
+	background-color: #032d42;
+	color: #ffffff;
+	font-family: 'Courier New', Courier, monospace;
+}
+
+/* Download link styles */
+.download-link {
+	display: inline-block;
+	font-weight: 100;
+}
+
+.download-link a {
+	color: #ff8c00;
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	font-size: 15px;
+	font-weight: 500;
+	transition: all 0.2s ease;
+}
+
+.download-link a:hover {
+	text-decoration: underline;
+}
+
+
+
+a.version {
+	text-decoration: none;
+	display: none;
+}
