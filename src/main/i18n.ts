@@ -11,11 +11,11 @@ const resources = {
 
 export async function initI18n(): Promise<void> {
   const savedLanguage = store.get('language')
-  let lng = savedLanguage
+  let lng: string = savedLanguage
 
   if (lng === 'auto') {
     const locale = app.getLocale().split('-')[0]
-    lng = resources[locale] ? locale : 'en'
+    lng = (resources[locale] ? locale : 'en') as string
   }
 
   await i18next.init({
