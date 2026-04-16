@@ -22,6 +22,7 @@ import { createInstanceWindow } from './instanceWindow'
 import { Tab } from './viewManager'
 import { initializeSessions } from './sessionManager'
 import { openSNUtilsPopup, openSNUtilsSettings } from './snUtilsWindows'
+import { autoUpdater } from 'electron-updater'
 
 if (is.dev) {
   process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
@@ -1214,6 +1215,40 @@ app.whenReady().then(() => {
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
+
+  // Initialize auto-updates
+  autoUpdater.autoDownload = true
+  autoUpdater.autoInstallOnAppQuit = true
+
+  autoUpdater.on('update-available', (info) => {
+    console.log(`[AutoUpdate] Update available: ${info.version}`)
+  })
+
+  autoUpdater.on('update-downloaded', (info) => {
+    console.log(`[AutoUpdate] Update downloaded: ${info.version}`)
+    dialog.showMessageBox({
+      type: 'info',
+      title: 'Actualización lista',
+      message: `La versión ${info.version} de Snow Hub ha sido descargada satisfactoriamente. Se instalará automáticamente al cerrar la aplicación.`,
+      buttons: ['Aceptar', 'Reiniciar ahora']
+    }).then((result) => {
+      if (result.response === 1) {
+        autoUpdater.quitAndInstall()
+      }
+    })
+  })
+
+  autoUpdater.on('error', (err) => {
+    console.error(`[AutoUpdate] Error: ${err.message}`)
+  })
+
+  // Check for updates every 2 hours
+  setInterval(() => {
+    autoUpdater.checkForUpdates().catch(err => console.error('Check for updates failed', err))
+  }, 1000 * 60 * 60 * 2)
+
+  // Initial check
+  autoUpdater.checkForUpdates().catch(err => console.error('Initial check for updates failed', err))
 })
 
 app.on('window-all-closed', () => {
