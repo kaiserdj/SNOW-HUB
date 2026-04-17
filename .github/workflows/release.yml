@@ -2,13 +2,72 @@ name: Build and Release
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
+    paths:
+      - 'package.json'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag to build (e.g. v1.1.4)'
+        required: false
+        default: ''
 
 jobs:
-  release:
-    runs-on: ${{ matrix.os }}
+  check-and-tag:
+    runs-on: ubuntu-latest
+    outputs:
+      new_tag: ${{ steps.tag.outputs.new_tag }}
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
+      - name: Check version change
+        id: check
+        run: |
+          NEW_VERSION=$(jq -r .version package.json)
+          # Use || true to avoid failure on first commit or if HEAD^ is missing
+          OLD_VERSION=$(git show HEAD^:package.json 2>/dev/null | jq -r .version || echo "none")
+          
+          if [ "$NEW_VERSION" != "$OLD_VERSION" ]; then
+            echo "Version changed from $OLD_VERSION to $NEW_VERSION"
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          else
+            echo "Version unchanged"
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create and Push Tag
+        id: tag
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          VERSION="v${{ steps.check.outputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch --tags
+          
+          if git rev-parse "$VERSION" >/dev/null 2>&1; then
+            echo "Tag $VERSION already exists. Skipping..."
+            echo "new_tag=$VERSION" >> $GITHUB_OUTPUT
+          else
+            echo "Creating tag $VERSION"
+            git tag "$VERSION"
+            git push origin "$VERSION"
+            echo "new_tag=$VERSION" >> $GITHUB_OUTPUT
+          fi
+
+  build:
+    needs: check-and-tag
+    # Run if a new tag was detected/created OR if triggered manually
+    if: |
+      github.event_name == 'workflow_dispatch' || 
+      (needs.check-and-tag.result == 'success' && needs.check-and-tag.outputs.new_tag != '')
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
@@ -16,6 +75,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Priority: Manual Tag > New Tag > Current Ref
+          ref: ${{ github.event.inputs.tag_name || needs.check-and-tag.outputs.new_tag || github.ref }}
 
       - name: Install Node.js
         uses: actions/setup-node@v4
@@ -24,9 +86,8 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
 
-      # We need to run the prep-ext script before building
       - name: Prepare extensions
         run: npm run prep-ext
 
