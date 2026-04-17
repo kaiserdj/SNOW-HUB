@@ -166,7 +166,7 @@ export function Dashboard(): React.JSX.Element {
               <span className="text-foreground border-b-2 border-primary/20">
                 {t('dashboard.subtitle_highlight')}
               </span>
-              {t('dashboard.subtitle_end') || t('dashboard.subtitle_part2')}
+              {t('dashboard.subtitle_end')}
             </p>
           </div>
 

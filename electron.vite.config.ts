@@ -3,10 +3,23 @@ import { defineConfig } from 'electron-vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  main: {},
+  main: {
+    build: {
+      rollupOptions: {
+        external: ['electron']
+      }
+    }
+  },
   preload: {
     build: {
       rollupOptions: {
+        external: ['electron'],
+        output: {
+          format: 'cjs',
+          entryFileNames: '[name].js',
+          chunkFileNames: 'chunks/[name].js',
+          assetFileNames: 'assets/[name].[ext]'
+        },
         input: {
           index: resolve('src/preload/index.ts'),
           extension: resolve('src/preload/extension.ts'),

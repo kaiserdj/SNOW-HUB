@@ -12,7 +12,7 @@
     "title": "SNOW Hub",
     "subtitle_part1": "Professional instance management with ",
     "subtitle_highlight": "hardened isolation",
-    "subtitle_part2": " and developer utilities.",
+    "subtitle_end": " and developer utilities.",
     "add_instance": "Add Instance",
     "edit_instance": "Edit Instance",
     "new_workspace": "New Workspace",

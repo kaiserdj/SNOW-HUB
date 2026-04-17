@@ -21,10 +21,9 @@ i18n
 
 // Initialize language from store
 window.api.getLanguage().then(async (lng) => {
-  if (lng === 'auto') {
-    // If auto, the main process will have already decided or we can detect here too
-    // But since we want consistency, we'll ask the main process what the effective language is
-    // Actually, let's just use the logic in main.tsx to set it
+  if (!lng || lng === 'auto') {
+    const systemLng = navigator.language.split('-')[0]
+    await i18n.changeLanguage(systemLng)
   } else {
     await i18n.changeLanguage(lng)
   }
