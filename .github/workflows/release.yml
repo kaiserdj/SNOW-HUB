@@ -12,6 +12,8 @@ on:
         description: 'Tag to build (e.g. v1.1.4)'
         required: false
         default: ''
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   check-and-tag:
@@ -82,7 +84,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
 
       - name: Install dependencies
